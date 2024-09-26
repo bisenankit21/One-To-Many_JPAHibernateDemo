@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ankit</groupId>
-	<artifactId>JPAHibernateDemo</artifactId>
+	<artifactId>JPAHibernateDemo_ONE_TO_ONE_Uni</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>JPAHibernateDemo</name>
 	<description>Demo project for Spring Boot</description>
