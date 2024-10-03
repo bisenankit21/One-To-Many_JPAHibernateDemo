@@ -21,10 +21,27 @@ public class JpaHibernateDemoApplication {
 	@Bean    //Executed after the Spring Beans have been loaded
 	public CommandLineRunner commandLineRunner(AppDAO appDAO){
 		return runner ->{
-			 createInstructor(appDAO);
+		// createInstructor(appDAO);
 			//findInstructor(appDAO);
 			//deleteInstructor(appDAO);
+			//findInstructorDetail(appDAO);
+			deleteInstructorDetail(appDAO);
 		};
+	}
+
+	private void deleteInstructorDetail(AppDAO appDAO) {
+		int id =3;
+		System.out.println("Deleting Instructor detail having id :" +id);
+		appDAO.deleteInstructorDetailById(id);
+		System.out.println("Done");
+	}
+
+	private void findInstructorDetail(AppDAO appDAO) {
+		int id=2;
+		System.out.println("Instructor Detail for this Id :"+ id + " is");
+		 InstructorDetail instructorDetail= appDAO.findInstructorDetailById(id);
+		System.out.println(instructorDetail);
+		System.out.println("The associated instructor is : "+instructorDetail.getInstructor());
 	}
 
 	private void deleteInstructor(AppDAO appDAO) {
