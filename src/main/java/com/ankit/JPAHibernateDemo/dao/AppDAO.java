@@ -1,7 +1,11 @@
 package com.ankit.JPAHibernateDemo.dao;
 
+import com.ankit.JPAHibernateDemo.entity.Course;
 import com.ankit.JPAHibernateDemo.entity.Instructor;
 import com.ankit.JPAHibernateDemo.entity.InstructorDetail;
+import jakarta.persistence.criteria.CriteriaBuilder;
+
+import java.util.List;
 
 public interface AppDAO {
     void save(Instructor theInstructor);
@@ -9,6 +13,12 @@ public interface AppDAO {
     void deleteInstructor(int id);
     InstructorDetail findInstructorDetailById(int id);
     void deleteInstructorDetailById(int id);
+    List<Course> findCoursesByInstructorId(int id);
+    Instructor findInstructorByIdJoinFetch(int id);
+    void update(Instructor instructor);
+    void updateCourse(Course course);
+    Course findCourseById(int id);
+    void deleteCourseById(int id);
 
 
 }
