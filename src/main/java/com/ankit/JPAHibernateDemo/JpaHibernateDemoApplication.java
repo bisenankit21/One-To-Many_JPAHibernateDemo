@@ -4,6 +4,7 @@ import com.ankit.JPAHibernateDemo.dao.AppDAO;
 import com.ankit.JPAHibernateDemo.entity.Course;
 import com.ankit.JPAHibernateDemo.entity.Instructor;
 import com.ankit.JPAHibernateDemo.entity.InstructorDetail;
+import com.ankit.JPAHibernateDemo.entity.Review;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,10 +36,31 @@ public class JpaHibernateDemoApplication {
 			//updateInstructor(appDAO);
 			//updateCourse(appDAO);
 
-			deleteCourse(appDAO);
+			//deleteCourse(appDAO);
+
+			createCourseAndReviews(appDAO);
 
 
 		};
+	}
+
+	private void createCourseAndReviews(AppDAO appDAO) {
+		//create a course
+		Course tempCourse = new Course("Pacman--the Story");
+		//add some review
+
+		tempCourse.addReview(new Review("Great Course...loved it!!"));
+		tempCourse.addReview(new Review(" Cool Course...loved it, well done!!"));
+		tempCourse.addReview(new Review("Bad Course...hate this, not good!!"));
+
+		//save the course/.... and laverege the cascade all
+
+		System.out.println("Saving the course");
+		System.out.println(tempCourse);
+		System.out.println(tempCourse.getReviews());
+		appDAO.save(tempCourse);
+		System.out.println("Done!!");
+
 	}
 
 	private void deleteCourse(AppDAO appDAO) {
