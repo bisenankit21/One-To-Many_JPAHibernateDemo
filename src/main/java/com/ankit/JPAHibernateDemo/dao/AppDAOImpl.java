@@ -3,12 +3,14 @@ package com.ankit.JPAHibernateDemo.dao;
 import com.ankit.JPAHibernateDemo.entity.Course;
 import com.ankit.JPAHibernateDemo.entity.Instructor;
 import com.ankit.JPAHibernateDemo.entity.InstructorDetail;
+import com.ankit.JPAHibernateDemo.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Repository
@@ -16,7 +18,7 @@ public class AppDAOImpl implements AppDAO {
 
     //Define field for entity manager
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
     //inject entity manager using constructor injection
 
     @Autowired
@@ -117,5 +119,51 @@ public class AppDAOImpl implements AppDAO {
     @Transactional
     public void save(Course theCourse) {
         entityManager.persist(theCourse);   //will save courses and associated reviews bacuse of cascadeType.all
+    }
+
+    @Override
+    public Course findCourseAndReviewByCourseId(int id) {
+        //create query
+        TypedQuery<Course> query = entityManager.createQuery("select c from Course c " +
+                        "JOIN FETCH c.review "+
+                        "where c.id = :data",
+                Course.class);
+        query.setParameter("data", id);
+        //execute query
+        return query.getSingleResult();
+
+    }
+
+    @Override
+    public Course findCourseAndStudentByCourseId(int id) {
+        TypedQuery<Course> query =  entityManager.createQuery(
+                "select c from Course c " +
+                "JOIN FETCH c.students "+
+                "where c.id = :data", Course.class);
+        query.setParameter("data", id);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public Student findStudentAndCoursesByStudentid(int id) {
+        TypedQuery<Student> query = entityManager.createQuery(
+                "select s from Student s " +
+                        "JOIN FETCH s.courses "+
+                        "where s.id = :data", Student.class);
+        query.setParameter("data", id);
+        return query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public void update(Student student) {
+        entityManager.merge(student);
+    }
+
+    @Override
+    @Transactional
+    public void deleteStudentById(int id) {
+        Student student = entityManager.find(Student.class, id);
+        entityManager.remove(student);
     }
 }

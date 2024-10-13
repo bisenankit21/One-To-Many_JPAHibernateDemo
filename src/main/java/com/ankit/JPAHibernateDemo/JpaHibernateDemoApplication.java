@@ -1,10 +1,7 @@
 package com.ankit.JPAHibernateDemo;
 
 import com.ankit.JPAHibernateDemo.dao.AppDAO;
-import com.ankit.JPAHibernateDemo.entity.Course;
-import com.ankit.JPAHibernateDemo.entity.Instructor;
-import com.ankit.JPAHibernateDemo.entity.InstructorDetail;
-import com.ankit.JPAHibernateDemo.entity.Review;
+import com.ankit.JPAHibernateDemo.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,10 +35,99 @@ public class JpaHibernateDemoApplication {
 
 			//deleteCourse(appDAO);
 
-			createCourseAndReviews(appDAO);
+			//createCourseAndReviews(appDAO);
+			//retrieveCourseAndReviews(appDAO);
+			//deleteCoursAndReviews(appDAO);
+			//createCourseAndStudent(appDAO);
+			//findCourseAndStudent(appDAO);
+
+			//findStudentAndCoursesbyStudentId(appDAO);
+			//addMoreCoursesForStudent(appDAO);
+			//deleteCourse(appDAO);
+			deleteStudent(appDAO);
 
 
 		};
+	}
+
+	private void deleteStudent(AppDAO appDAO) {
+		int id = 1;
+		System.out.println("Deleting student id  : "+id);
+		appDAO.deleteStudentById(id);
+		System.out.println("Deleted!!");
+	}
+
+	private void addMoreCoursesForStudent(AppDAO appDAO) {
+		int id = 2;
+		Student tempStudent= appDAO.findStudentAndCoursesByStudentid(id);
+		Course tempCourse1 = new Course("Rubik cube:- how to solve it ");
+		Course tempCourse2 = new Course("Gamje Development : solve it ");
+		tempStudent.addCourse(tempCourse1);
+		tempStudent.addCourse(tempCourse2);
+		System.out.println("Saving Students : "+ tempStudent);
+		System.out.println("Associated Courses :" + tempStudent.getCourses());
+		appDAO.update(tempStudent);
+		System.out.println("Done!!");
+	}
+
+	private void findStudentAndCoursesbyStudentId(AppDAO appDAO) {
+		int id= 2;
+		Student tempStudents =  appDAO.findStudentAndCoursesByStudentid(id);
+		System.out.println("Loaded Students :" +tempStudents);
+		System.out.println("Related Course " +tempStudents.getCourses());
+		System.out.println("Done!!");
+	}
+
+	private void findCourseAndStudent(AppDAO appDAO) {
+		int id = 10;
+		Course tempCourse =  appDAO.findCourseAndStudentByCourseId(id);
+		System.out.println("Loaded Course : "+ tempCourse);
+		System.out.println(("Students : "+ tempCourse.getStudents()));
+		System.out.println("Done");
+	}
+
+	private void createCourseAndStudent(AppDAO appDAO) {
+		//create a course
+
+		Course tempCourse =  new Course("Pacmam-- the untold story");
+
+		//create a Student
+
+		Student tempStudent1= new Student("Ankit", "Bisen", "bisenankit@gmail.com");
+		Student tempStudent2= new Student("Anna", "Nisen", "nisenannat@gmail.com");
+
+		//add stu7dent to the course
+
+		tempCourse.addStudent(tempStudent1);
+		tempCourse.addStudent(tempStudent2);
+
+		// save the course and associated students
+
+		System.out.println("Saving the course : "+tempCourse);
+		System.out.println("Associated "+ tempCourse.getStudents());
+		appDAO.save(tempCourse);
+		System.out.println("Done");
+	}
+
+	private void deleteCoursAndReviews(AppDAO appDAO) {
+		int id= 10;
+		System.out.println("Deleteing Course id : " + id);
+		appDAO.deleteCourseById(id);
+		System.out.println("Done");
+	}
+
+	private void retrieveCourseAndReviews(AppDAO appDAO) {
+		// get the course and reviews
+		int id= 10;
+		Course course = appDAO.findCourseAndReviewByCourseId(id);
+		//print  the course
+
+		System.out.println(course);
+		// print the reviews
+		System.out.println(course.getReviews());
+		System.out.println("Done!!!");
+
+
 	}
 
 	private void createCourseAndReviews(AppDAO appDAO) {
